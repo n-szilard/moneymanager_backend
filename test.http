@@ -67,3 +67,72 @@ Content-Type: application/json
 
 ### DELETE wallet by ID
 DELETE http://localhost:3300/wallets/1
+
+
+
+### GET all categories
+GET http://localhost:3300/categories
+
+### GET category by ID
+GET http://localhost:3300/categories/1
+
+### POST new category
+POST http://localhost:3300/categories
+Content-Type: application/json
+
+{
+  "name": "Szorakozas"
+}
+
+### PATCH category name by ID
+PATCH http://localhost:3300/categories/name/1
+Content-Type: application/json
+
+{
+  "name": "Bevasarlas"
+}
+
+### DELETE category by ID
+DELETE http://localhost:3300/categories/1
+
+
+
+### GET all transactions
+GET http://localhost:3300/transactions
+
+### GET transaction by ID
+GET http://localhost:3300/transactions/3
+
+### GET all transactions by wallet ID
+GET http://localhost:3300/transactions/wallet/2
+
+### GET all transactions by wallet ID and category ID
+GET http://localhost:3300/transactions/wallet/2/category/2
+
+### GET all transactions by wallet ID and type
+GET http://localhost:3300/transactions/wallet/2/type/kiadas
+
+### POST new transaction
+POST http://localhost:3300/transactions
+Content-Type: application/json
+
+{
+  "walletID": 2,
+  "amount": 1250,
+  "categoryID": 2,
+  "type": "kiadas"
+}
+
+### PATCH transaction data by ID
+PATCH http://localhost:3300/transactions/3
+Content-Type: application/json
+
+{
+  "walletID": 2,
+  "amount": 1500,
+  "categoryID": 2,
+  "type": "bevetel"
+}
+
+### DELETE transaction by ID
+DELETE http://localhost:3300/transactions/1

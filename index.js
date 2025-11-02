@@ -12,6 +12,8 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/users', require('./modules/users'));
 app.use('/wallets', require('./modules/wallets'));
+app.use('/categories', require('./modules/categories'));
+app.use('/transactions', require('./modules/transactions'));
 
 app.get('/', (req, res) => res.send('Money Manager API'));
 

@@ -1,0 +1,37 @@
+### GET all wallets
+GET http://localhost:3300/wallets
+
+### GET wallet by ID
+GET http://localhost:3300/wallets/1
+
+### GET all wallets by user ID
+GET http://localhost:3300/wallets/user/2
+
+### POST new wallet
+POST http://localhost:3300/wallets
+Content-Type: application/json
+
+{
+  "userID": 2,
+  "name": "Side Wallet",
+  "balance": 23
+}
+
+### PATCH wallet name by ID
+PATCH http://localhost:3300/wallets/name/1
+Content-Type: application/json
+
+{
+  "name": "Updated Wallet Name"
+}
+
+### PATCH wallet balance by ID
+PATCH http://localhost:3300/wallets/balance/1
+Content-Type: application/json
+
+{
+  "balance": 3000.00
+}
+
+### DELETE wallet by ID
+DELETE http://localhost:3300/wallets/1

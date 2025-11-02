@@ -1,0 +1,24 @@
+### GET all categories
+GET http://localhost:3300/categories
+
+### GET category by ID
+GET http://localhost:3300/categories/1
+
+### POST new category
+POST http://localhost:3300/categories
+Content-Type: application/json
+
+{
+  "name": "Szorakozas"
+}
+
+### PATCH category name by ID
+PATCH http://localhost:3300/categories/name/1
+Content-Type: application/json
+
+{
+  "name": "Bevasarlas"
+}
+
+### DELETE category by ID
+DELETE http://localhost:3300/categories/1
