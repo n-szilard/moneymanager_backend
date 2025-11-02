@@ -1,0 +1,29 @@
+### GET all users
+GET http://localhost:3300/users
+
+### GET user by ID
+GET localhost:3300/users/2
+
+### POST new user
+POST localhost:3300/users
+Content-Type: application/json
+
+{
+  "name": "POST teszt",
+  "email": "teszt@teszt.com",
+  "password": "pw123"
+}
+
+
+### DELETE user by ID
+DELETE localhost:3300/users/1
+Content-Type: application/json
+
+### PATCH user password
+PATCH localhost:3300/users/2/password
+Content-Type: application/json
+
+{
+  "oldPassword": "pw123",
+  "newPassword": "pw1234"
+}
