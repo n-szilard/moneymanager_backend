@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {query} = require('../utils/database');
+const SHA1 = require("crypto-js/sha1");
+const passwdRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 // GET all users
 router.get('/', (req, res) => {
@@ -22,14 +24,63 @@ router.get('/:id', (req, res) => {
 })
 
 
-// POST new user
-router.post('/', (req, res) => {
-    const { name, email, password } = req.body;
-    query('INSERT INTO users (name, email, password, role, status) VALUES (?, ?, ?, "user", "active")', [name, email, password], (err, result) => {
-        if (err) return res.status(500).json({ error: 'Internal Server Error', message: err.message });
-        res.status(201).json({ message: 'User created successfully' });
-    }, req)
-})
+// LOGIN
+router.post('/login', (req, res) => {
+    let { email, password } = req.body;
+    let table = 'users';
+
+    if (!email || !password){
+        res.status(400).send( { error: 'Hiányzó adatok!' });
+        return;
+    }
+
+    query(`SELECT * FROM ${table} WHERE email=? AND password=?`, [email, SHA1(password).toString()], (error, results) => {
+        if (error) return res.status(500).json({ error: error.message });
+        if (results.length == 0){
+            res.status(400).send({ error: 'Hibás belépési adatok!' });
+            return;
+        }
+        res.status(200).json(results);
+    }, req);
+
+});
+
+// Registation
+router.post('/registration', (req, res) => {
+    let table = 'users';
+    let { name, email, password, confirm, phone} = req.body;
+
+    if (!name || !email || !password || !confirm){
+        res.status(400).send({ error: 'Hiányzó adatok!' });
+        return;
+    }
+
+    if ( password != confirm){
+        res.status(400).send({ error: 'A megadott jelszavak nem egeznek!' });
+        return;
+    }
+
+    if (!password.match(passwdRegExp)){
+        res.status(400).send({ error: 'A megadott jelszó nem elég biztonságos!' });
+        return;
+    }
+
+    query(`SELECT id FROM ${table} WHERE email=?`, [email], (error, results)=>{
+        if (error) return res.status(500).json({ error: error.message });
+
+        if (results.length != 0){
+            res.status(400).send({ error: 'A megadott e-mail cím már regisztrálva van!' });
+            return;
+        }
+
+        query(`INSERT INTO ${table} (name, email, password, role, status) VALUES(?,?,?,'user','active')`, [name, email, SHA1(password).toString(), phone], (error, results) => {
+            if (error) return res.status(500).json({ error: error.message });
+            res.status(200).json(results);
+        }, req);
+
+    }, req);
+
+});
 
 // DELETE user by ID
 router.delete('/:id', (req, res) => {
