@@ -14,6 +14,15 @@ router.get('/', (req, res) => {
     }, req)
 })
 
+// GET all transaction by user id
+router.get('/user/:uid', (req, res) => {
+    const { uid } = req.params;
+    query('SELECT t.ID, t.amount, t.categoryID, t.type, t.walletID, c.name AS categoryName, w.name AS walletName FROM transactions t JOIN wallets w ON t.walletID = w.ID JOIN categories c ON t.categoryID = c.ID WHERE w.userID = ?', [uid], (err, result) => {
+        if (err) return res.status(500).json({ error: 'Internal Server Error', message: err.message });
+        res.json(result);
+    })
+})
+
 // GET all transactions by wallet id
 router.get('/wallet/:wid', (req, res) => {
     const { wid } = req.params;
